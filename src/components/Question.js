@@ -4,20 +4,15 @@ function Question({ question, onAnswered }) {
   const [timeRemaining, setTimeRemaining] = useState(10);
 
   useEffect(() => {
-    const countDown = setInterval(() => {
-      setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
-      if(timeRemaining <= 0) {
-        return function cleanup() {
-          clearInterval(timeRemaining);
-        };
-      }
-    });
 
+    if(timeRemaining === 0) {
+      setTimeRemaining(10);
+      onAnswered(false);
+    };
 
+    const countDown = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000);
 
-    // return function cleanup() {
-    //   clearInterval(countDown);
-    // };
+    return function () {clearTimeout(countDown)};
   }, [timeRemaining]);
 
   function handleAnswer(isCorrect) {
